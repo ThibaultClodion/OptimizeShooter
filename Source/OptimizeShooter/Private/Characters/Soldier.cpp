@@ -4,10 +4,19 @@
 #include "Characters/Soldier.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 ASoldier::ASoldier()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(RootComponent);
+	CameraBoom->TargetArmLength = 300.0f;
+
+	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
+	ViewCamera->SetupAttachment(CameraBoom);
 }
 
 void ASoldier::BeginPlay()
@@ -29,6 +38,7 @@ void ASoldier::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoldier::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoldier::Look);
 	}
 }
 
@@ -47,9 +57,7 @@ void ASoldier::InitializeMappingContext()
 
 void ASoldier::Move(const FInputActionValue& Value)
 {
-	const FVector2D MovementVector = Value.Get<FVector2D>();
-
-	UE_LOG(LogTemp, Warning, TEXT("Movement Vector: X=%f, Y=%f"), MovementVector.X, MovementVector.Y);
+	const FVector2D MovementVector = Value.Get<FVector2D>() * MovementSpeedFactor;
 
 	if (Controller)
 	{
@@ -58,6 +66,17 @@ void ASoldier::Move(const FInputActionValue& Value)
 
 		const FVector RightDirection = GetActorRightVector();
 		AddMovementInput(RightDirection, MovementVector.X);
+	}
+}
+
+void ASoldier::Look(const FInputActionValue& Value)
+{
+	const FVector2D LookAxisVector = Value.Get<FVector2D>() * RotationSpeedFactor;
+
+	if (Controller)
+	{
+		AddControllerYawInput(LookAxisVector.X);
+		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
 

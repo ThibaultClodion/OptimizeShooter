@@ -9,6 +9,8 @@
 
 class UInputMappingContext;
 class UInputAction;
+class USpringArmComponent;
+class UCameraComponent;
 
 UCLASS()
 class OPTIMIZESHOOTER_API ASoldier : public ACharacter
@@ -23,6 +25,7 @@ public:
 	/** Inputs **/
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
 protected:
 	virtual void BeginPlay() override;
@@ -34,5 +37,21 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Speed, meta = (UIMin = "0.0", UIMax = "1.0"))
+	float MovementSpeedFactor = 0.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Speed, meta = (UIMin = "0.0", UIMax = "1.0"))
+	float RotationSpeedFactor = 0.5f;
+
+private:
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* CameraBoom;
+
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* ViewCamera;
 
 };
