@@ -24,6 +24,15 @@ void ASoldier::BeginPlay()
 	Super::BeginPlay();
 
 	InitializeMappingContext();
+
+	if (GunClass)
+	{
+		Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+		if (Gun)
+		{
+			Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("LeftHandSocket"));
+		}
+	}
 }
 
 void ASoldier::Tick(float DeltaTime)
@@ -39,6 +48,7 @@ void ASoldier::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoldier::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoldier::Look);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ASoldier::Shoot);
 	}
 }
 
@@ -77,6 +87,14 @@ void ASoldier::Look(const FInputActionValue& Value)
 	{
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void ASoldier::Shoot()
+{
+	if (Gun)
+	{
+		Gun->Shoot();
 	}
 }
 

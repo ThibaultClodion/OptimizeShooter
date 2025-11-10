@@ -17,6 +17,11 @@ public:
 	AGun();
 	virtual void Tick(float DeltaTime) override;
 
+	void Shoot();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void VibrationEffect();
+
 protected:
 	virtual void BeginPlay() override;
 

@@ -23,3 +23,7 @@ void AGun::Tick(float DeltaTime)
 
 }
 
+void AGun::Shoot()
+{
+	VibrationEffect();
+}

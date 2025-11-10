@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Weapons/Gun.h"
 #include "Soldier.generated.h"
 
 class UInputMappingContext;
@@ -26,12 +27,20 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Shoot();
 
 protected:
 	virtual void BeginPlay() override;
 
 	void InitializeMappingContext();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)
+	TSubclassOf<AGun> GunClass;
+
+	UPROPERTY()
+	AGun* Gun;
+
+	/** Inputs **/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* CharacterMappingContext;
 
@@ -40,6 +49,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ShootAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Speed, meta = (UIMin = "0.0", UIMax = "1.0"))
 	float MovementSpeedFactor = 0.5f;
