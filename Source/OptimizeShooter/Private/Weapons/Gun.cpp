@@ -21,9 +21,20 @@ void AGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (IsShooting)
+	{
+		TimeSinceLastShot += DeltaTime;
+
+		if (TimeSinceLastShot >= FireRate)
+		{
+			ShootFeedback();
+			TimeSinceLastShot = 0.0f;
+		}
+	}
 }
 
-void AGun::Shoot()
+void AGun::SwitchShootState()
 {
-	VibrationEffect();
+	IsShooting = !IsShooting;
+	TimeSinceLastShot = FireRate; // Allow immediate shooting when toggled
 }

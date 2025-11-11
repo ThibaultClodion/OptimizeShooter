@@ -27,7 +27,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void Shoot();
+	void SwitchShoot();
 
 protected:
 	virtual void BeginPlay() override;

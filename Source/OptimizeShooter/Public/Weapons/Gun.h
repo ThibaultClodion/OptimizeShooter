@@ -7,6 +7,7 @@
 #include "Gun.generated.h"
 
 class UStaticMeshComponent;
+class UForceFeedbackEffect;
 
 UCLASS()
 class OPTIMIZESHOOTER_API AGun : public AActor
@@ -17,15 +18,28 @@ public:
 	AGun();
 	virtual void Tick(float DeltaTime) override;
 
-	void Shoot();
+	void SwitchShootState();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void VibrationEffect();
+	void ShootFeedback();
 
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly)
 	UStaticMeshComponent* GunMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Gun")
+	float FireRate = 0.09f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Gun")
+	float Damage = 10.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Gun")
+	float Range = 1000.0f;
+
+
+private:
+	bool IsShooting = false;
+	float TimeSinceLastShot = 0.0f;
 };

@@ -48,7 +48,7 @@ void ASoldier::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoldier::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoldier::Look);
-		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ASoldier::Shoot);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ASoldier::SwitchShoot);
 	}
 }
 
@@ -90,11 +90,11 @@ void ASoldier::Look(const FInputActionValue& Value)
 	}
 }
 
-void ASoldier::Shoot()
+void ASoldier::SwitchShoot()
 {
 	if (Gun)
 	{
-		Gun->Shoot();
+		Gun->SwitchShootState();
 	}
 }
 
