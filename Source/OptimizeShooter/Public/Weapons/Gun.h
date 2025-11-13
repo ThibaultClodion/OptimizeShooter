@@ -23,11 +23,17 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ShootFeedback();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void Shoot();
+
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UStaticMeshComponent* GunMesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	USceneComponent* MuzzleLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Gun")
 	float FireRate = 0.09f;

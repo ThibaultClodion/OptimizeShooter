@@ -9,6 +9,9 @@ AGun::AGun()
 
 	GunMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GunMesh"));
 	RootComponent = GunMesh;
+
+	MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleLocation"));
+	MuzzleLocation->SetupAttachment(GunMesh);
 }
 
 void AGun::BeginPlay()
@@ -28,6 +31,7 @@ void AGun::Tick(float DeltaTime)
 		if (TimeSinceLastShot >= FireRate)
 		{
 			ShootFeedback();
+			Shoot();
 			TimeSinceLastShot = 0.0f;
 		}
 	}
